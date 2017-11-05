@@ -1,0 +1,78 @@
+<html>
+<body>
+<canvas id="mycanvas" width="400" height="400"></canvas>
+<p id="score" style></p>
+<script>
+window.onload=function(){
+	canvas = document.getElementById("mycanvas");
+	ctx = canvas.getContext("2d");
+	document.addEventListener("keydown",keyPush);
+	setInterval(game,100);
+    
+}
+px=py=20;
+grdsz=tilec=20;
+ax=ay=12;
+xv=yv=0;
+tail=5; 
+trail=[];
+function game(){
+	px+=xv;
+	py+=yv;
+    console.log(px);
+    console.log(py);
+	if(px<0){
+		px=tilec-1;
+	}
+	if(px>tilec-1){
+		px=0;
+	}
+	if(py<0){
+		py=tilec-1;
+	}
+	if(py>tilec-1){
+		py=0;
+	}
+	ctx.fillStyle="black";
+	ctx.fillRect(0,0,canvas.width,canvas.height);
+	
+	ctx.fillStyle="green";
+	for(var i=0;i<trail.length;i++){
+		ctx.fillRect(trail[i].x*grdsz,trail[i].y*grdsz,grdsz-2,grdsz-2);
+		if(trail[i].x==px && trail[i].y==py){
+			tail=5;
+		}
+	}
+	ctx.fillStyle="red";
+	ctx.fillRect(ax*grdsz,ay*grdsz,grdsz-2,grdsz-2);
+	
+	trail.push({x:px,y:py});
+	while(trail.length>tail){
+	trail.shift();
+	}
+	if(ax==px && ay==py){
+	tail++;
+	ax=Math.floor(Math.random()*tilec);
+	ay=Math.floor(Math.random()*tilec);
+	}
+	document.getElementById("score").innerHTML="Score: "+((tail-5)*10);
+}
+function keyPush(e){
+	switch(e.keyCode){
+		case 37:
+		xv=-1;yv=0;
+		break;
+		case 38:
+		xv=0;yv=-1;
+		break;
+		case 39:
+		xv=1;yv=0;
+		break;
+		case 40:
+		xv=0;yv=1;
+		break;
+}
+}
+</script>
+</body>
+</html>
